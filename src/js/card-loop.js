@@ -1,13 +1,12 @@
 // Бесконечная лента карточек справа налево, шагами — как hero на studioloop.com.br, но по горизонтали.
 // Каждый шаг: все карточки сдвигаются на одну позицию (1.05 с, cubic-bezier(0.1, 0.9, 0.2, 1)), затем пауза 0.32 с.
 // Поворот зависит от позиции: 15° на шаг, центральная карточка — 0°, как веер в макете.
+// Карточки сразу стоят на местах, как в макете, и начинают движение после первой паузы.
 // Разметка: <div data-card-loop data-cards="w-3,s-4,..." data-center="3">
 
 (() => {
   const STEP_DURATION = 1050;
   const STEP_PAUSE = 320;
-  const INTRO_DURATION = 1800;
-  const INTRO_OFFSET = 6;          // интро: карточки въезжают справа на 6 позиций
   const ROTATE_PER_SLOT = 15;      // градусов
   const OVERLAP = 80 / 384;        // в макете карточки 384px перекрываются на 80px
   const CARDS_PATH = 'assets/cards/';
@@ -32,7 +31,6 @@
     };
   }
   const glide = bezier(0.1, 0.9, 0.2, 1);
-  const inOut = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
 
   function init(root) {
     const names = root.dataset.cards.split(',').map((s) => s.trim());
@@ -74,18 +72,14 @@
     if (reduced) { render(0); return; }
 
     let visible = true;
-    let phase = 'intro';
+    let phase = 'pause';
     let phaseStart = performance.now();
 
     const tick = (now) => {
       if (!visible) { requestAnimationFrame(tick); return; }
       const elapsed = now - phaseStart;
 
-      if (phase === 'intro') {
-        const p = Math.min(1, elapsed / INTRO_DURATION);
-        render(-INTRO_OFFSET * (1 - inOut(p)));
-        if (p === 1) { phase = 'pause'; phaseStart = now; }
-      } else if (phase === 'move') {
+      if (phase === 'move') {
         const p = Math.min(1, elapsed / STEP_DURATION);
         render(glide(p));
         if (p === 1) {
@@ -116,7 +110,7 @@
     new IntersectionObserver(([e]) => setVisible(e.isIntersecting && !document.hidden)).observe(root);
     document.addEventListener('visibilitychange', () => setVisible(!document.hidden));
 
-    render(-INTRO_OFFSET);
+    render(0);
     requestAnimationFrame(tick);
   }
 

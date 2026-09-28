@@ -66,11 +66,18 @@
   will-change: transform;
 }
 
+.hero__br-mobile { display: none; }
+
 .hero__cta {
   position: relative;
   z-index: 2;
   flex: none;
   width: min(100%, 33.5rem);
+}
+
+/* desktop-hero-screen-2560: между логотипом и заголовком 56px */
+@media (min-width: 2240px) {
+  .hero__head { gap: var(--space-56); }
 }
 
 @media (max-width: 767.98px) {
@@ -79,7 +86,8 @@
   }
   .hero__text { gap: var(--space-16); width: min(100%, 20rem); }
   .hero__br { display: none; }
-  .hero__subtitle { max-width: 17.5rem; } /* в макете перенос после «карточки» */
+  .hero__br-mobile { display: inline; } /* в макете перенос после «карточки» */
+  .hero__subtitle { max-width: 20rem; }
 
   /* ДС: Button Size=M на мобильном */
   .hero__cta {

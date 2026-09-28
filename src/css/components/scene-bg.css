@@ -1,6 +1,6 @@
-/* Фон экранов — ДС: Hero-Screen-Bg 506:21613.
-   Цвет — токен Background/Bg-Colored; поверх три слоя-ассета: фото, силуэт, бумажная текстура.
-   Слои позиционируются в процентах от «рамки» макета (1920×1080 / 360×632), рамка работает как background-size: cover. */
+/* Фон экранов — ДС: Hero-Screen-Bg 506:21613 (варианты 1920 / 2560 / 360).
+   Цвет — токен Background/Bg-Colored; поверх два слоя-ассета: фото (40%) и силуэт (50%).
+   Слои позиционируются в процентах от «рамки» варианта, рамка работает как background-size: cover. */
 
 .scene-bg {
   position: absolute;
@@ -18,64 +18,35 @@
   width: max(100%, 100svh * 1920 / 1080);
   aspect-ratio: 1920 / 1080;
   transform: translate(-50%, -50%);
-  /* transform изолирует группу наложения: цвет должен быть внутри рамки, иначе multiply-текстура смешается с прозрачностью */
-  background: var(--background-bg-colored);
 }
 
 .scene-bg__frame > * { position: absolute; max-width: none; }
 
-.scene-bg__texture {
-  inset: 0;
-  background: url("../../assets/bg/paper-texture.webp") top left / 26.042% auto repeat;
-  mix-blend-mode: multiply;
-  opacity: 0.4;
+.scene-bg__photo { object-fit: cover; opacity: 0.4; }
+.scene-bg__silhouette { opacity: 0.5; }
+
+/* Size=Desktop-Hero-Screen-1920 (506:21612) */
+.scene-bg--hero .scene-bg__photo { left: -2.5%; top: -14.074%; width: 106.719%; height: 216.667%; }
+.scene-bg--hero .scene-bg__silhouette { left: -2.344%; top: -13.981%; width: 106.51%; height: 216.204%; }
+
+/* Size=Desktop-Hero-Screen-2560 (506:21611) */
+@media (min-width: 2240px) {
+  .scene-bg__frame {
+    width: max(100%, 100vh * 2560 / 1440);
+    width: max(100%, 100svh * 2560 / 1440);
+    aspect-ratio: 2560 / 1440;
+  }
+  .scene-bg--hero .scene-bg__photo { left: 9.336%; top: -5.556%; width: 80.039%; height: 162.5%; }
+  .scene-bg--hero .scene-bg__silhouette { left: 9.483%; top: -5.417%; width: 79.826%; height: 162.051%; }
 }
 
-/* Desktop: слои из desktop-hero-screen */
-.scene-bg--hero .scene-bg__photo {
-  left: -2.5%;
-  top: -14.074%;
-  width: 106.719%;
-  height: 216.667%;
-  object-fit: cover;
-  opacity: 0.4;
-}
-.scene-bg--hero .scene-bg__silhouette {
-  left: -2.304%;
-  top: -13.89%;
-  width: 106.439%;
-  height: 216.069%;
-  opacity: 0.5;
-}
-
-.scene-bg__frame--mobile { display: none; }
-
-/* Mobile: слои из mobile-viewport-hero-screen (360×632) */
+/* Size=Mobile-Hero-Screen-360 (506:21610) */
 @media (max-width: 767.98px) {
-  .scene-bg__frame { display: none; }
-  .scene-bg__frame--mobile {
-    display: block;
+  .scene-bg__frame {
     width: max(100%, 100vh * 360 / 632);
     width: max(100%, 100svh * 360 / 632);
     aspect-ratio: 360 / 632;
   }
-  .scene-bg--hero .scene-bg__frame--mobile .scene-bg__photo {
-    left: -102.522%;
-    top: 10.369%;
-    width: 299.556%;
-    height: 95.981%;
-    opacity: 0.5;
-  }
-  .scene-bg--hero .scene-bg__frame--mobile .scene-bg__silhouette {
-    left: -109.736%;
-    top: -9.63%;
-    width: 318.844%;
-    height: 207.386%;
-    opacity: 0.5;
-  }
-  .scene-bg__frame--mobile .scene-bg__texture {
-    top: 3.16%;
-    bottom: -3.16%;
-    background-size: 234.03% auto;
-  }
+  .scene-bg--hero .scene-bg__photo { left: -111.517%; top: -10.127%; width: 323.171%; height: 210.228%; }
+  .scene-bg--hero .scene-bg__silhouette { left: -111.042%; top: -10.037%; width: 322.54%; height: 209.779%; }
 }

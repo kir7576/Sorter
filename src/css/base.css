@@ -30,8 +30,9 @@ h1, h2, p { margin: 0; }
 .logo {
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* иначе flex растянет SVG по высоте (у него preserveAspectRatio="none") */
   width: 10rem;
   height: 5rem;
   padding-top: var(--space-20);
 }
-.logo__img { width: 5.018rem; height: auto; }
+.logo__img { width: 5.018rem; height: 2.684rem; } /* 80.29 × 42.94 */
