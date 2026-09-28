@@ -1,0 +1,61 @@
+/* Игровой UI: таймер, жизни, стрелки управления. Цвета — только токены Game-UI/*. */
+
+:root {
+  --blink-period: 1.2s;   /* период мерцания двоеточия и сердца */
+}
+
+/* --- Таймер: HUD-Timer-Dots 504:10530 (State: Active | Disable) ------------- */
+.timer {
+  display: flex;
+  align-items: center;
+  font-family: var(--family-timer), sans-serif;
+  font-weight: var(--weight-timer);
+  line-height: 1;
+  color: var(--game-ui-timer-active);
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+.timer__dots { color: var(--game-ui-timer-active); }
+.timer__dots--blink { animation: blink-dots var(--blink-period) infinite; }
+
+@keyframes blink-dots {
+  0%, 45%   { color: var(--game-ui-timer-active); }
+  50%, 95%  { color: var(--game-ui-disable); }
+  100%      { color: var(--game-ui-timer-active); }
+}
+
+/* --- Жизни: HUD-Health 504:10513 (State: Active | Disable) ------------------- */
+.health { display: flex; align-items: center; }
+
+.heart { position: relative; display: block; flex: none; }
+.heart svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.heart__disable { fill: var(--game-ui-disable); stroke: var(--game-ui-stroke); stroke-linecap: round; stroke-linejoin: round; }
+.heart__active { fill: var(--game-ui-health-active); }
+.heart:not(.heart--disable) .heart__disable { opacity: 0; }
+.heart--disable .heart__active { opacity: 0; }
+
+/* мигает Disable ↔ Active; сдвинуто на полпериода относительно двоеточия, чтобы мигали по очереди */
+.heart--blink .heart__active,
+.heart--blink .heart__disable {
+  animation: blink-heart var(--blink-period) infinite;
+  animation-delay: calc(var(--blink-period) / -2);
+}
+.heart--blink .heart__disable { animation-direction: reverse; }
+@keyframes blink-heart {
+  0%, 45%   { opacity: 1; }
+  50%, 95%  { opacity: 0; }
+  100%      { opacity: 1; }
+}
+
+/* --- Стрелки управления (L — волки, R — овцы) ------------------------------- */
+.arrow { display: block; flex: none; }
+.arrow svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.arrow__fill { fill: var(--arrow-color); }
+.arrow__ring { stroke: var(--arrow-ring); }
+.arrow__glyph-outline { stroke: var(--arrow-color); }
+.arrow__glyph, .arrow__edge { stroke: var(--stroke-dark); }
+.arrow--left  { --arrow-color: var(--game-ui-controls-error);   --arrow-ring: var(--game-ui-controls-error); }
+.arrow--right { --arrow-color: var(--game-ui-controls-success); --arrow-ring: var(--stroke-on-bg-container-success); }
+
+@media (prefers-reduced-motion: reduce) {
+  .timer__dots--blink, .heart--blink .heart__active, .heart--blink .heart__disable { animation: none; }
+}

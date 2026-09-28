@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="bg" clip-path="url(#clip0_0_244)">
+<g id="Subtract" filter="url(#filter0_f_0_244)">
+<path d="M2116 1190H-196V-110H2116V1190ZM239 -45C62.2689 -45 -81 98.2689 -81 275V805C-81 981.731 62.2689 1125 239 1125H1681C1857.73 1125 2001 981.731 2001 805V275C2001 98.2689 1857.73 -45 1681 -45H239Z" fill="white" fill-opacity="0.3"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_244" x="-436" y="-350" width="2792" height="1780" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="120" result="effect1_foregroundBlur_0_244"/>
+</filter>
+<clipPath id="clip0_0_244">
+<rect width="1920" height="1080" fill="white"/>
+</clipPath>
+</defs>
+</svg>

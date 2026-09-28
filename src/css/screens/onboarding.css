@@ -1,0 +1,213 @@
+/* Onboarding — Figma: desktop-onboarding 296:7942 (1920×1080), mobile 296:9603 (360×632).
+   Центральная «сцена» свёрстана в координатах макета относительно центра экрана;
+   js/stage.js вписывает её между шапкой и кнопкой (--stage-k ≤ 1). */
+
+.onboarding {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--background-bg);
+}
+
+/* --- Фон: Backlight 41:819 (Default) + Grid 503:3214 (Neutral) --- */
+.onboarding__bg { position: absolute; inset: 0; pointer-events: none; }
+.onboarding__grid {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 100vh * 1920 / 1080);
+  width: max(100%, 100svh * 1920 / 1080);
+  aspect-ratio: 1920 / 1080;
+  transform: translate(-50%, -50%);
+  background: url("../../assets/bg/onboarding-grid-desktop.webp") center / 100% 100% no-repeat;
+}
+.onboarding__backlight {
+  position: absolute;
+  inset: 5.5rem 0 0;
+  background: url("../../assets/bg/backlight-desktop.svg") center / 100% 100% no-repeat;
+}
+
+.onboarding__header { position: relative; z-index: 3; }
+
+/* --- Сцена --- */
+.onboarding__stage {
+  --stage-w: 1264;          /* ширина содержимого сцены в макете */
+  --stage-up: 318;          /* от центра до верха заголовка */
+  --stage-down: 222;        /* от центра до низа карточек */
+  --reserve-top: 112;       /* шапка 88 + 24 */
+  --reserve-bottom: 192;    /* кнопка 88 + отступ 80 + 24 */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 1264px;
+  height: 640px;
+  transform: translate(-50%, -50%) scale(var(--stage-k, 1));
+}
+.onboarding__stage > *,
+.onboarding__stage > picture > img { position: absolute; }
+.onboarding__stage > picture { display: contents; }
+
+/* затемнение под центром: Fade-Onboarding 296:8047 (800×420, Bg 50%, blur 60) */
+.onboarding__fade {
+  left: calc(50% - 400px);
+  top: calc(50% - 37px - 210px);
+  width: 800px;
+  height: 420px;
+  border-radius: 50%;
+  background: var(--background-bg);
+  opacity: 0.5;
+  filter: blur(60px);
+}
+
+.onboarding__title {
+  left: 50%;
+  top: calc(50% - 318px);
+  width: 730px;
+  transform: translateX(-50%);
+  text-align: center;
+  font-family: var(--family-subheader), sans-serif;
+  font-weight: var(--weight-subheader);
+  font-size: var(--size-subheader);
+  line-height: 1.35; /* в макете 1.35, токен Subheader-Line = 48 */
+  color: var(--text-light-primary);
+}
+
+.onboarding__card,
+.onboarding__arrow { left: 50%; top: 50%; }
+
+.onboarding__card { width: 384px; height: 384px; }
+.onboarding__card--l { transform: translate(calc(-50% - 327px), calc(-50% - 3px)) rotate(-10deg); }
+.onboarding__card--r { transform: translate(calc(-50% + 327px), calc(-50% - 3px)) rotate(10deg); }
+
+.onboarding__arrow { width: 204px; height: 204px; }
+.onboarding__arrow--l { transform: translate(calc(-50% - 530px), calc(-50% + 18px)); }
+.onboarding__arrow--r { transform: translate(calc(-50% + 530px), calc(-50% + 18px)); }
+
+/* Onboarding-conter-health 296:8238 */
+.onboarding__status {
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  padding-block: 15px;
+  transform: translate(-50%, calc(-50% - 52px));
+}
+.onboarding__timer { gap: 6px; font-size: 78px; } /* нет токена: в макете 78px */
+.onboarding__timer-min { width: 48px; text-align: center; }
+.onboarding__divider { display: none; }
+.onboarding__status .heart { width: 84px; height: 84px; }
+
+.onboarding__hint {
+  left: 50%;
+  top: calc(50% + 114px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-align: center;
+  font-family: var(--family-body), sans-serif;
+  font-weight: var(--weight-subheader); /* SemiBold, в макете 600 */
+  font-size: var(--size-body-1);
+  line-height: 1.35;
+  color: var(--text-light-primary);
+}
+
+.onboarding__cta {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--space-64) + var(--space-16));
+  z-index: 2;
+  width: min(calc(100% - var(--space-40)), 33.5rem);
+  transform: translateX(-50%);
+}
+
+/* --- Mobile: 360×632 --- */
+@media (max-width: 767.98px) {
+  .onboarding__grid {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    aspect-ratio: 360 / 562;
+    transform: translateX(-50%);
+    background-image: url("../../assets/bg/onboarding-grid-mobile.webp");
+  }
+  .onboarding__backlight {
+    inset: auto 0 0;
+    height: min(100%, 35.125rem);
+    background-image: url("../../assets/bg/backlight-mobile.svg");
+  }
+
+  .onboarding__stage {
+    --stage-w: 360;
+    --stage-up: 214;
+    --stage-down: 188;
+    --reserve-top: 84;       /* шапка 72 + 12 */
+    --reserve-bottom: 112;   /* кнопка 72 + 24 + 16 */
+    --stage-max: 1.2;
+    width: 360px;
+    height: 440px;
+  }
+  .onboarding__fade { display: none; }
+
+  .onboarding__title {
+    top: calc(50% - 214px);
+    width: 320px;
+    line-height: var(--size-subheader-line);
+  }
+
+  .onboarding__card { width: 192px; height: 192px; }
+  .onboarding__card--r { transform: translate(calc(-50% + 43.54px), calc(-50% - 49.58px)) rotate(-6.96deg); }
+  .onboarding__card--l { transform: translate(calc(-50% - 48px), calc(-50% - 34.13px)) rotate(10.34deg); }
+
+  .onboarding__arrow { width: 68px; height: 68px; }
+  /* порядок слоёв как в макете: R-карточка, R-стрелка, L-карточка, L-стрелка */
+  .onboarding__card--r { z-index: 1; }
+  .onboarding__arrow--r { z-index: 2; }
+  .onboarding__card--l { z-index: 3; }
+  .onboarding__arrow--l { z-index: 4; }
+  .onboarding__arrow--r { transform: translate(calc(-50% + 118.58px), calc(-50% + 23.18px)); }
+  .onboarding__arrow--l { transform: translate(calc(-50% - 117.7px), calc(-50% + 23.9px)); }
+
+  /* 506:22276: строка «таймер | сердца» + подпись */
+  .onboarding__status {
+    width: 290px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 18px;
+    padding-block: var(--space-8);
+    transform: translate(-50%, calc(-50% + 131px - 29px));
+  }
+  .onboarding__timer {
+    gap: 3px;
+    width: 126px;
+    height: 42px;
+    justify-content: flex-end;
+    align-items: flex-start;
+    font-size: 39px; /* нет токена: в макете 39px */
+  }
+  .onboarding__timer-min { width: 24px; }
+  .onboarding__divider {
+    display: block;
+    width: 2px;
+    height: 36px;
+    background: var(--game-ui-disable);
+  }
+  .onboarding__status .heart { width: 42px; height: 42px; }
+
+  .onboarding__hint {
+    top: calc(50% + 131px - 57px + 58px + 8px);
+    font-weight: var(--weight-body-1);
+    line-height: var(--size-body-1-line);
+  }
+
+  .onboarding__cta {
+    bottom: var(--space-24);
+    width: min(calc(100% - var(--space-40)), 20rem);
+    padding: var(--space-24) var(--space-32);
+    border-radius: var(--s-radius);
+    font-size: var(--size-button-m);
+    line-height: var(--size-button-m-line);
+    letter-spacing: var(--size-button-m-letter-spacing);
+  }
+}

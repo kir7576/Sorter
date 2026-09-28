@@ -1,0 +1,66 @@
+/* Header — ДС: Header 506:17693 (Size=Desktop | Mobile, HUD=Off).
+   Logo Variant=Header: фрейм 160×80, знак в точке (4, 20). Mobile: фрейм 72×48, знак 54×21.76 в точке (8, 13). */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-24);
+  background: var(--background-on-bg);
+  border-bottom: 1px solid var(--stroke-on-bg-container);
+}
+
+.header__logo {
+  position: relative;
+  flex: none;
+  width: 10rem;
+  height: 5rem;
+}
+.header__logo img {
+  position: absolute;
+  left: 0.25rem;
+  top: 1.25rem;
+  width: 5.018rem;
+  height: 2.684rem;
+}
+.header__logo .header__logo-mobile { display: none; }
+
+.header__actions {
+  display: flex;
+  justify-content: flex-end;
+  width: 10rem;
+}
+
+/* HUD-Icons 506:17602 — кнопка звука 48×48 (Default / Hover, Sound On / Off) */
+.sound-toggle {
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--misc-icons);
+  cursor: pointer;
+}
+.sound-toggle svg { display: block; width: 100%; height: 100%; }
+.sound-toggle__bg { fill: var(--background-on-bg-container); transition: fill 0.2s ease; }
+.sound-toggle__ring { stroke: var(--stroke-on-bg-container); }
+.sound-toggle:hover .sound-toggle__bg { fill: var(--background-on-bg-container-hover); }
+.sound-toggle:focus-visible { outline: 2px solid var(--stroke-light); outline-offset: 2px; border-radius: 50%; }
+.sound-toggle .sound-toggle__on { display: none; }
+.sound-toggle[aria-pressed="true"] .sound-toggle__on { display: inline; }
+.sound-toggle[aria-pressed="true"] .sound-toggle__off { display: none; }
+
+@media (max-width: 767.98px) {
+  .header { padding: var(--space-12); }
+  .header__logo { width: 4.5rem; height: 3rem; }
+  .header__logo .header__logo-desktop { display: none; }
+  .header__logo .header__logo-mobile {
+    display: block;
+    left: 0.5rem;
+    top: 0.8125rem;
+    width: 3.375rem;
+    height: 1.36rem;
+  }
+  .header__actions { width: auto; }
+}

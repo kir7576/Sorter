@@ -18,22 +18,7 @@
 }
 
 .reveal__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-16);
-  height: 100%;
-  padding: var(--space-24);
-  text-align: center;
+  position: absolute;
+  inset: 0;
   will-change: transform, opacity;
 }
-
-.reveal__title {
-  font-family: var(--family-header), sans-serif;
-  font-weight: var(--weight-header);
-  font-size: var(--size-header);
-  line-height: var(--size-header-line);
-}
-
-.reveal__text { color: var(--text-light-secondary); }
