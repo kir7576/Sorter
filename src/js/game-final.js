@@ -1,6 +1,6 @@
 // Финал игры: по событию 'game:end' показывает «Почти получилось» (lose) или форму приза (win),
 // после отправки формы — «Спасибо за игру». Шапка с таймером и жизнями остаётся как в конце игры.
-// Форма — демо: данные проверяются, но никуда не отправляются.
+// При появлении формы — конфетти (js/confetti.js). Форма — демо: данные проверяются, но никуда не отправляются.
 // Открыть экран сразу для проверки: #win, #lose или #thanks в адресе.
 
 (() => {
@@ -25,6 +25,8 @@
     requestAnimationFrame(() => final.classList.add('is-visible'));
     const focusable = screens[name].querySelector('button, input, a');
     focusable?.focus({ preventScroll: true });
+    // выигрыш — залп конфетти, когда форма проявилась
+    if (name === 'win') timer = setTimeout(() => window.confetti?.(game), 250);
   }
 
   function hide() {

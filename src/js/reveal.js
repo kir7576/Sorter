@@ -46,11 +46,35 @@
   window.addEventListener('resize', () => { layout(); update(); });
   new ResizeObserver(() => { layout(); update(); }).observe(page);
 
-  // кнопка «Играть» — плавный скролл до полного раскрытия
+  // кнопка «Играть» — своя плавная прокрутка до полного раскрытия:
+  // в 1.5 раза дольше стандартной (≈550 мс) и с мягким разгоном и торможением.
+  // Колесо, касание или клавиши во время перехода его останавливают.
+  const DURATION = 850;
+  const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let anim = 0;
+
+  const stop = () => { cancelAnimationFrame(anim); anim = 0; };
+  ['wheel', 'touchstart', 'keydown'].forEach((type) => window.addEventListener(type, stop, { passive: true }));
+
+  function scrollToReveal() {
+    stop();
+    const from = window.scrollY;
+    const to = start + height;
+    if (reduce || Math.abs(to - from) < 2) { window.scrollTo({ top: to, behavior: 'instant' }); return; }
+    const t0 = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / DURATION);
+      window.scrollTo({ top: from + (to - from) * easeInOut(t), behavior: 'instant' });
+      anim = t < 1 ? requestAnimationFrame(step) : 0;
+    };
+    anim = requestAnimationFrame(step);
+  }
+
   document.querySelectorAll('[data-reveal-link]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      window.scrollTo({ top: start + height, behavior: 'smooth' });
+      scrollToReveal();
     });
   });
 })();

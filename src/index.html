@@ -7,6 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Onest:wght@400;500;600;700&display=swap">
+  <!-- Фоновые сетки грузим сразу, чтобы экраны появлялись уже с ними (иначе браузер запросит их только при показе) -->
+  <link rel="preload" as="image" href="assets/bg/onboarding-grid-desktop.webp" type="image/webp" media="(min-width: 768px)">
+  <link rel="preload" as="image" href="assets/bg/onboarding-grid-mobile.webp" type="image/webp" media="(max-width: 767.98px)">
+  <link rel="preload" as="image" href="assets/bg/grid-accent-desktop.webp" type="image/webp" media="(min-width: 768px)">
+  <link rel="preload" as="image" href="assets/bg/grid-accent-mobile.webp" type="image/webp" media="(max-width: 767.98px)">
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components/button.css">
@@ -311,6 +316,7 @@
   <script src="js/game-presets.js" defer></script>
   <script src="js/game.js" defer></script>
   <script src="js/game-engine.js" defer></script>
+  <script src="js/confetti.js" defer></script>
   <script src="js/game-final.js" defer></script>
   <script src="js/loader.js" defer></script>
 </body>
