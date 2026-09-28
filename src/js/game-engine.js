@@ -1,7 +1,9 @@
 // Механика игры «волки влево, овцы вправо».
-// Карточки идут без пауз в случайном порядке. Следующая ждёт сверху (×0.75, +15°),
-// затем слетает в центр и растёт до ×1 (−15°) — и медленно опускается, пока её можно сортировать.
-// Не успели — пролетает вниз, минус жизнь. Ошиблись — минус жизнь. Подсветка по краям: ok / err.
+// Карточки идут без пауз в случайном порядке. Следующая ждёт сверху (×0.75, +15°).
+// Затем одно непрерывное падение через весь экран: быстро влетает, растёт до ×1 (−15°) и замедляется
+// в центре, потом разгоняется и уходит вниз. Сортировать можно всё это время.
+// Не успели — ушла за экран, минус жизнь. Ошиблись — минус жизнь.
+// Подсветка по краям переключается в состояние error / success (js/edge-glow.js).
 // Управление: кнопки ← →, стрелки клавиатуры, свайп.
 // Темп берётся из window.gamePresets (js/game-presets.js) и растёт к концу игры.
 // Конец игры: событие 'game:end' на .game с detail { result: 'win' | 'lose', lives }.
@@ -26,17 +28,15 @@
   const DURATION = 60000;
   const LIVES = 3;
 
-  const presets = () => window.gamePresets?.get() ?? { enter: 550, wait: 1400, drop: 600, fly: 420 };
+  const presets = () => window.gamePresets?.get() ?? { enter: 550, fall: 2600, fly: 420 };
   const speed = (p) => window.gamePresets?.factor(p) ?? 1;
 
   // картинки заранее, чтобы первая карточка не мигала пустой
   CARDS.forEach((name) => { new Image().src = `${CARDS_PATH}${name}.webp`; });
 
   const ease = {
-    linear: (t) => t,
     out: (t) => 1 - Math.pow(1 - t, 3),
     in: (t) => t * t * t,
-    inQuad: (t) => t * t,
   };
 
   let L = null;            // раскладка
@@ -64,7 +64,6 @@
     L = {
       size,
       center,
-      sink: { ...center, y: center.y + size * 0.08 },          // куда опускается, пока ждёт ответа
       peek,
       above: { ...peek, y: -size },
       below: { x: 0, y: H + size * 0.8, r: 5, s: 1 },
@@ -107,6 +106,7 @@
   function pose(c) {
     if (!c.m) return c.pose;
     const t = Math.min(1, (clock - c.m.t0) / c.m.dur);
+    if (c.m.fall) return (c.pose = fallPose(c, t));
     const e = c.m.fn(t);
     const { from, to } = c.m;
     c.pose = {
@@ -120,6 +120,27 @@
 
   const done = (c) => clock - c.m.t0 >= c.m.dur;
 
+  // Падение: путь «сверху → центр → за нижний край», y по пути линейный.
+  // Скорость — перевёрнутый колокол: u(t) проходит центр (uc) в момент t = uc, где скорость минимальна.
+  // g(x) = a·x + (1 − a)·x³ — чем меньше a, тем сильнее замедление в центре.
+  const SLOW = 0.18;
+  const g = (x) => SLOW * x + (1 - SLOW) * x * x * x;
+
+  function fall(c, dur) {
+    const from = { ...c.pose };
+    const uc = Math.min(0.9, Math.max(0.1, (L.center.y - from.y) / (L.below.y - from.y)));
+    c.m = { fall: true, from, uc, t0: clock, dur: Math.max(1, dur) };
+  }
+
+  function fallPose(c, t) {
+    const { from, uc } = c.m;
+    const u = t < uc ? uc - uc * g((uc - t) / uc) : uc + (1 - uc) * g((t - uc) / (1 - uc));
+    const lerp = (a, b, k) => ({
+      x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, r: a.r + (b.r - a.r) * k, s: a.s + (b.s - a.s) * k,
+    });
+    return u < uc ? lerp(from, L.center, u / uc) : lerp(L.center, L.below, (u - uc) / (1 - uc));
+  }
+
   function draw(c) {
     const p = pose(c);
     const h = L.size / 2;
@@ -132,8 +153,8 @@
   function promote() {
     cur = next;
     next = null;
-    cur.phase = 'enter';
-    move(cur, L.center, presets().enter / factor(), ease.out);
+    cur.phase = 'fall';
+    fall(cur, presets().fall / factor());
     cur.el.style.zIndex = 2;
   }
 
@@ -151,15 +172,15 @@
     const c = cur;
     cur = null;
     leave(c, L[dir], presets().fly / factor(), ease.in);
-    window.edgeGlow?.flash(correct ? 'ok' : 'err', game);
+    window.edgeGlow?.state(correct ? 'ok' : 'err', game);
     if (!correct) loseLife();
   }
 
   function miss() {
-    const c = cur;
+    // карточка уже ушла за нижний край — просто убираем
+    cur.el.remove();
     cur = null;
-    leave(c, L.below, presets().drop / factor(), ease.inQuad);
-    window.edgeGlow?.flash('err', game);
+    window.edgeGlow?.state('err', game);
     loseLife();
   }
 
@@ -192,12 +213,7 @@
   function step() {
     if (state === 'play') {
       if (played >= DURATION) { finish('win'); return; }
-      if (cur?.phase === 'enter' && done(cur)) {
-        cur.phase = 'wait';
-        move(cur, L.sink, presets().wait / factor(), ease.linear);
-      } else if (cur?.phase === 'wait' && done(cur)) {
-        miss();
-      }
+      if (cur?.phase === 'fall' && done(cur)) miss();
       if (state === 'play') {
         if (!cur && next) promote();
         if (!next) next = spawn();
@@ -243,6 +259,7 @@
     hearts.forEach((h) => h.classList.remove('heart--disable'));
     shown = -1;
     renderTimer();
+    window.edgeGlow?.state('base', game);
     layout();
   }
 

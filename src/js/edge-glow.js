@@ -1,35 +1,49 @@
-// Сигнал свечения по краям: window.edgeGlow.flash('ok' | 'err', root?)
-// Ошибка — два коротких импульса, успех — один мягкий; базовое свечение на это время приглушается.
-// Понадобится на экране игры (ответ на карточку). Логика перенесена из демо «Свечение по краям».
+// Подсветка по краям (ДС: Backlight 41:819, State: Default | Error | Success).
+// window.edgeGlow.state('ok' | 'err' | 'base', root?) — переключает состояние:
+// слой ok/err плавно проявляется и полностью заменяет базовое свечение, держится HOLD мс
+// и возвращается к Default. Новый ответ сразу перебивает предыдущий, без скачков яркости.
 
 (() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const IN = reduce ? 0 : 160;     // переход в Error / Success
+  const HOLD = 900;                // сколько держится состояние
+  const OUT = reduce ? 0 : 500;    // возврат в Default
   const running = new WeakMap();
 
-  function flash(kind, root = document) {
-    const layer = (name) => root.querySelector(`[data-edge-glow="${name}"]`);
-    const el = layer(kind);
-    const other = layer(kind === 'err' ? 'ok' : 'err');
-    const base = layer('base');
-    if (!el) return;
+  const layer = (root, name) => root.querySelector(`[data-edge-glow="${name}"]`);
 
-    (running.get(root) || []).forEach((a) => a.cancel()); // быстрые ответы не копятся
-    if (other) other.style.opacity = 0;
+  // анимирует opacity от текущего видимого значения, чтобы смена состояний не дёргалась
+  function fade(el, frames, total) {
+    const from = parseFloat(getComputedStyle(el).opacity);
+    const keyframes = [{ opacity: from, offset: 0 }, ...frames];
+    return el.animate(keyframes, { duration: Math.max(1, total), fill: 'forwards' });
+  }
 
-    const frames = kind === 'err'
-      ? [{ opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 0.35, offset: 0.28 }, { opacity: 1, offset: 0.42 }, { opacity: 1, offset: 0.6 }, { opacity: 0 }]
-      : [{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.6 }, { opacity: 0 }];
-    const duration = reduce ? 700 : kind === 'err' ? 1100 : 1000;
+  function state(kind, root = document) {
+    const layers = ['base', 'ok', 'err'].map((n) => layer(root, n));
+    if (!layers[0]) return;
+    // зафиксировать текущие значения до отмены старых анимаций
+    const now = layers.map((el) => el && parseFloat(getComputedStyle(el).opacity));
+    (running.get(root) || []).forEach((a) => a.cancel());
+    layers.forEach((el, i) => { if (el) el.style.opacity = now[i]; });
 
-    const anims = [el.animate(frames, { duration, easing: 'ease-out' })];
-    if (base) {
-      anims.push(base.animate(
-        [{ opacity: 1 }, { opacity: 0.25, offset: 0.2 }, { opacity: 0.25, offset: 0.6 }, { opacity: 1 }],
-        { duration, easing: 'ease-out' },
-      ));
-    }
+    const total = kind === 'base' ? OUT : IN + HOLD + OUT;
+    const k1 = kind === 'base' ? 1 : IN / total;
+    const k2 = kind === 'base' ? 1 : (IN + HOLD) / total;
+    const anims = [];
+    ['base', 'ok', 'err'].forEach((name, i) => {
+      const el = layers[i];
+      if (!el) return;
+      const rest = name === 'base' ? 1 : 0;          // значение в Default
+      const peak = name === 'base' ? 0 : name === kind ? 1 : 0;
+      const frames = kind === 'base'
+        ? [{ opacity: rest, offset: 1 }]
+        : [{ opacity: peak, offset: k1 }, { opacity: peak, offset: k2 }, { opacity: rest, offset: 1 }];
+      anims.push(fade(el, frames, total));
+    });
     running.set(root, anims);
   }
 
-  window.edgeGlow = { flash };
+  // совместимость со старым вызовом
+  window.edgeGlow = { state, flash: state };
 })();

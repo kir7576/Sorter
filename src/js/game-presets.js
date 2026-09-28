@@ -1,19 +1,18 @@
 // Пресеты скорости игры и панель настроек (открывается кликом по логотипу в шапке игры).
-// window.gamePresets.get()  → текущие параметры { enter, wait, drop, fly, rampEnd, rampCurve }
+// window.gamePresets.get()  → текущие параметры { enter, fall, fly, rampEnd, rampCurve }
 // window.gamePresets.factor(p) → во сколько раз быстрее на доле игры p (0…1)
 // Выбор запоминается в браузере (localStorage), если он доступен.
 
 (() => {
   // Длительности в мс при множителе 1:
-  //   enter — карточка слетает сверху в центр и растёт ×0.75 → ×1
-  //   wait  — стоит в центре (медленно опускается), пока её можно сортировать
-  //   drop  — не успели: пролетает вниз за экран
+  //   enter — новая карточка выезжает сверху на место «следующей»
+  //   fall  — непрерывное падение через экран: быстро → медленно в центре → быстро; всё это время можно ответить
   //   fly   — отсортирована: улетает влево или вправо
   const SPEED = {
-    slow:   { label: 'Медленно',  enter: 700, wait: 2000, drop: 750, fly: 500 },
-    normal: { label: 'Нормально', enter: 550, wait: 1400, drop: 600, fly: 420 },
-    fast:   { label: 'Быстро',    enter: 450, wait: 950,  drop: 500, fly: 360 },
-    hard:   { label: 'Хардкор',   enter: 350, wait: 600,  drop: 420, fly: 300 },
+    slow:   { label: 'Медленно',  enter: 700, fall: 3600, fly: 500 },
+    normal: { label: 'Нормально', enter: 550, fall: 2600, fly: 420 },
+    fast:   { label: 'Быстро',    enter: 450, fall: 1900, fly: 360 },
+    hard:   { label: 'Хардкор',   enter: 350, fall: 1300, fly: 300 },
   };
 
   // Ускорение к концу: множитель скорости = 1 + (rampEnd − 1) · p^rampCurve, p — доля прошедшего времени.
@@ -56,10 +55,9 @@
 
   const renderSummary = () => {
     const s = get();
-    const start = s.enter + s.wait;
     summary.textContent = s.rampEnd > 1
-      ? `Время на ответ: ${sec(start)} с в начале → ${sec(start / factor(1))} с в конце.`
-      : `Время на ответ: ${sec(start)} с всю игру.`;
+      ? `Карточка пролетает экран за ${sec(s.fall)} с в начале → ${sec(s.fall / factor(1))} с в конце.`
+      : `Карточка пролетает экран за ${sec(s.fall)} с всю игру.`;
   };
 
   panel.querySelectorAll('[data-preset-group]').forEach((box) => {
