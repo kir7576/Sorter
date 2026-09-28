@@ -1,0 +1,23 @@
+{
+  "name": "sorter",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build:tokens": "node build-tokens.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kir7576/Sorter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kir7576/Sorter/issues"
+  },
+  "homepage": "https://github.com/kir7576/Sorter#readme",
+  "devDependencies": {
+    "style-dictionary": "^4.4.0"
+  }
+}
