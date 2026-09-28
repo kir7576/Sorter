@@ -62,7 +62,7 @@
 .arrow--left  { --arrow-color: var(--game-ui-controls-error);   --arrow-ring: var(--game-ui-controls-error); }
 .arrow--right { --arrow-color: var(--game-ui-controls-success); --arrow-ring: var(--stroke-on-bg-container-success); }
 
-/* --- HUD-Timer 506:15897 / 506:15898: «0:59», ведущий ноль — цветом Disable ---- */
+/* --- HUD-Timer 506:15897 / 506:15898: «0:59», минута-ноль — цветом Disable, «1» — Active --- */
 .hud-timer {
   display: flex;
   justify-content: flex-end;
@@ -73,7 +73,8 @@
   font-size: var(--size-hud-timer);
 }
 .hud-timer .timer { gap: 4px; }
-.hud-timer__zero { width: 44px; color: var(--game-ui-disable); }
+.hud-timer__zero { width: 44px; text-align: center; color: var(--game-ui-disable); }
+.hud-timer__zero.is-active { color: var(--game-ui-timer-active); }
 .hud-timer__dots { width: 14px; }
 .hud-timer__sec { color: var(--text-light-primary); }
 

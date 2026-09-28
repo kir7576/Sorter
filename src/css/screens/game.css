@@ -52,3 +52,19 @@ html.is-game { overflow: hidden; }
   .countdown { top: calc(50% - 26px); }
   .game__controls { left: 0; right: 0; bottom: 0; transform: none; }
 }
+
+/* Поле с карточками: на весь экран, под шапкой и кнопками. Позиции карточек считает js/game-engine.js */
+.game { touch-action: none; }
+.game__field { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+.game-card {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  will-change: transform;
+}
+.countdown { z-index: 3; }
+.control:not(:disabled):active { transform: scale(0.94); }
+.control { transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease; }

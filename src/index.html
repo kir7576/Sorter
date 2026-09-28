@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="css/screens/onboarding.css">
   <link rel="stylesheet" href="css/reveal.css">
   <link rel="stylesheet" href="css/screens/game.css">
+  <link rel="stylesheet" href="css/components/settings.css">
   <script src="js/card-loop.js" defer></script>
   <script src="js/reveal.js" defer></script>
 </head>
@@ -141,14 +142,14 @@
     </div>
 
     <header class="header header--hud game__header">
-      <div class="header__logo">
-            <img class="header__logo-desktop" src="assets/logo.svg" alt="EMX Emailmatrix" width="80" height="43">
-            <img class="header__logo-mobile" src="assets/logo-mobile.svg" alt="EMX" width="54" height="22">
-          </div>
+      <button class="header__logo header__logo--button" type="button" aria-label="Настройки игры" aria-expanded="false" aria-controls="game-settings" data-settings-open>
+        <img class="header__logo-desktop" src="assets/logo.svg" alt="" width="80" height="43">
+        <img class="header__logo-mobile" src="assets/logo-mobile.svg" alt="" width="54" height="22">
+      </button>
       <div class="hud">
-        <div class="hud-timer" role="timer" aria-label="Осталось 59 секунд">
+        <div class="hud-timer" role="timer" aria-label="Одна минута на игру">
           <div class="timer" aria-hidden="true">
-            <span class="hud-timer__zero">0</span><span class="timer__dots hud-timer__dots">:</span><span class="hud-timer__sec" data-timer-sec>59</span>
+            <span class="hud-timer__zero is-active" data-timer-min>1</span><span class="timer__dots hud-timer__dots">:</span><span class="hud-timer__sec" data-timer-sec>00</span>
           </div>
         </div>
         <span class="hud-divider" aria-hidden="true"></span>
@@ -170,6 +171,10 @@
       </div>
     </header>
 
+    <!-- Поле: падающие карточки (js/game-engine.js). Figma: desktop-game-start 296:7634 / 296:8539 / 296:8256,
+         mobile 434:10008 / 444:2600 / 434:10630 -->
+    <div class="game__field" data-field aria-hidden="true"></div>
+
     <div class="countdown" data-countdown aria-live="polite" hidden>
       <span class="countdown__digit" data-countdown-digit>3</span>
     </div>
@@ -184,11 +189,32 @@
         <svg class="control__glyph-m" viewBox="0 0 48 48" aria-hidden="true"><path d="M32 34L42 24L32 14M42 24H6" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="round"/></svg>
       </button>
     </div>
+    <!-- Панель настроек (служебная, не из макета): открывается кликом по логотипу -->
+    <div class="settings" id="game-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" data-settings hidden>
+      <div class="settings__head">
+        <h2 class="settings__title" id="settings-title">Настройки игры</h2>
+        <button class="settings__close" type="button" aria-label="Закрыть" data-settings-close>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6L18 18M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <fieldset class="settings__group">
+        <legend class="settings__label">Скорость карточек</legend>
+        <div class="settings__options" data-preset-group="speed"></div>
+      </fieldset>
+      <fieldset class="settings__group">
+        <legend class="settings__label">Ускорение к концу игры</legend>
+        <div class="settings__options" data-preset-group="ramp"></div>
+      </fieldset>
+      <p class="settings__summary" data-settings-summary></p>
+      <button class="button button--m button--light settings__restart" type="button" data-settings-restart>Начать заново</button>
+    </div>
   </section>
 
   <script src="js/stage.js" defer></script>
   <script src="js/sound-toggle.js" defer></script>
   <script src="js/edge-glow.js" defer></script>
+  <script src="js/game-presets.js" defer></script>
   <script src="js/game.js" defer></script>
+  <script src="js/game-engine.js" defer></script>
 </body>
 </html>

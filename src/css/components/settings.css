@@ -1,0 +1,103 @@
+/* Панель настроек игры — служебная, в макете её нет; собрана из токенов ДС.
+   Открывается кликом по логотипу в шапке игры, закрывается крестиком или Esc. Пока открыта — игра на паузе. */
+
+.settings {
+  position: absolute;
+  top: calc(5.5rem + var(--space-12));
+  left: var(--space-24);
+  z-index: 5;
+  width: min(26rem, calc(100% - 2 * var(--space-24)));
+  max-height: calc(100% - 5.5rem - 2 * var(--space-12));
+  overflow-y: auto;
+  padding: var(--space-24);
+  border: 1px solid var(--stroke-on-bg-container);
+  border-radius: var(--l-radius);
+  background: var(--background-on-bg);
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.45);
+  color: var(--text-light-primary);
+  font-family: var(--family-body), sans-serif;
+}
+.settings[hidden] { display: none; }
+
+.settings__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+.settings__title {
+  margin: 0;
+  font-family: var(--family-subheader), sans-serif;
+  font-weight: var(--weight-subheader);
+  font-size: var(--size-body-1);
+  line-height: var(--size-body-1-line);
+}
+.settings__close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--stroke-on-bg-container);
+  border-radius: var(--max-radius);
+  background: var(--background-on-bg-container);
+  color: var(--text-light-primary);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.settings__close svg { width: 1.25rem; height: 1.25rem; }
+.settings__close:hover { background: var(--background-on-bg-container-hover); border-color: var(--stroke-on-bg-container-hover); }
+
+.settings__group { margin: 0 0 var(--space-16); padding: 0; border: 0; min-width: 0; }
+.settings__label {
+  margin-bottom: var(--space-8);
+  padding: 0;
+  font-weight: var(--weight-body-3);
+  font-size: var(--size-body-3);
+  line-height: var(--size-body-3-line);
+  color: var(--text-light-secondary);
+}
+.settings__options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); }
+
+.settings__option { position: relative; }
+.settings__option input { position: absolute; opacity: 0; pointer-events: none; }
+.settings__option span {
+  display: block;
+  padding: var(--space-12);
+  border: 1px solid var(--stroke-on-bg-container);
+  border-radius: var(--s-radius);
+  background: var(--background-on-bg-container);
+  font-weight: var(--weight-body-3);
+  font-size: var(--size-body-3);
+  line-height: var(--size-body-3-line);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.settings__option span:hover { background: var(--background-on-bg-container-hover); }
+.settings__option input:checked + span {
+  border-color: var(--stroke-light);
+  background: var(--text-light-primary);
+  color: var(--text-dark-primary);
+}
+.settings__option input:focus-visible + span { outline: 2px solid var(--stroke-light); outline-offset: 2px; }
+
+.settings__summary {
+  margin: 0 0 var(--space-16);
+  font-size: var(--size-body-3);
+  line-height: var(--size-body-3-line);
+  color: var(--text-light-secondary);
+}
+.settings__restart { width: 100%; }
+
+@media (max-width: 767.98px) {
+  .settings {
+    top: calc(4.5rem + var(--space-8));
+    left: var(--space-12);
+    width: calc(100% - 2 * var(--space-12));
+    max-height: calc(100% - 4.5rem - 2 * var(--space-8));
+    padding: var(--space-16);
+  }
+}

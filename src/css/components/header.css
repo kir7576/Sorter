@@ -25,6 +25,15 @@
 }
 .header__logo .header__logo-mobile { display: none; }
 
+/* логотип-кнопка в шапке игры: открывает панель настроек */
+.header__logo--button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.header__logo--button:focus-visible { outline: 2px solid var(--stroke-light); outline-offset: 2px; border-radius: var(--s-radius); }
+
 .header__actions {
   display: flex;
   justify-content: flex-end;
