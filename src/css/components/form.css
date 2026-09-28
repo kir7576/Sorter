@@ -1,5 +1,5 @@
 /* Поп-ап и форма приза. ДС: Input-Field 205:5909 (Default | Hover | Filled | Error),
-   Check-Box 205:5900 (default | hover | check | Error), Share-Icons 469:3941.
+   Check-Box 205:5900 (default | hover | check | Error; Size: Desktop 40 | Mobile 32), Share-Icons 469:3941.
    Поп-апы: Pop-Up-Form 460:3358 / 468:3715 / 468:3745, Mobile 460:3493; Pop-Up-Thank-You 460:3376 / 460:3520. */
 
 .popup {
@@ -155,6 +155,16 @@
     letter-spacing: var(--size-button-s-letter-spacing);
   }
   .check { gap: var(--space-12); }
+  /* Check-Box Size=Mobile (556:4094–556:4097): 32×32, скругление xs, галочка 32px по центру */
+  .check__box { width: 2rem; height: 2rem; border-radius: var(--xs-radius); }
+  .check__box::after {
+    left: 50%;
+    top: 50%;
+    width: 2rem;
+    height: 2rem;
+    transform: translate(-50%, -50%);
+    background-image: url("../../assets/icons/check-m.svg");
+  }
   .popup--thanks { padding: var(--space-40) var(--space-16); gap: var(--space-32); }
   .popup--thanks .popup__head { gap: var(--space-12); }
   .share { gap: var(--space-16); }
