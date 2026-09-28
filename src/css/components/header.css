@@ -64,3 +64,17 @@
   }
   .header__actions { width: auto; }
 }
+
+/* Header HUD=On 506:17691 / 506:17689: по центру таймер | разделитель | жизни */
+.header--hud { padding-block: 0; }
+.hud {
+  display: flex;
+  align-items: center;
+  gap: var(--space-24);
+  padding-block: var(--space-12);
+}
+
+@media (max-width: 767.98px) {
+  .header--hud { padding: var(--space-12); }
+  .hud { gap: var(--space-8); padding-block: var(--space-4); }
+}

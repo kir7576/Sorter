@@ -1,0 +1,54 @@
+/* Игра — поверх всей страницы. Первое состояние — обратный отсчёт.
+   Figma: desktop-game-countdown 296:7736 (1920×1080), mobile-viewport-game-start 296:7480 (360×632). */
+
+.game {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  background: var(--background-bg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+}
+.game.is-open { opacity: 1; visibility: visible; transition: opacity 0.4s ease; }
+html.is-game { overflow: hidden; }
+
+.game__header { position: relative; z-index: 2; }
+
+/* Countdown 506:22432: цифра 240px (mobile 160px), центр на 50px выше середины экрана.
+   Зум: цифра появляется крупной и уменьшается до следующей (js/game.js).
+   Шрифт в ZOOM раз крупнее макета, анимация уменьшает от 1 до 1/ZOOM —
+   так цифра всегда растрируется в полном размере и не мылится. */
+.countdown {
+  --countdown-zoom: 1.6;
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 50px);
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.countdown__digit {
+  display: block;
+  font-family: var(--family-countdown), sans-serif;
+  font-weight: var(--weight-countdown);
+  font-size: calc(var(--size-hud-countdown) * var(--countdown-zoom));
+  line-height: 1;
+  color: var(--text-light-primary);
+  font-feature-settings: "lnum" 1, "tnum" 1;
+  transform: scale(calc(1 / var(--countdown-zoom)));
+}
+
+.game__controls {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-64);
+  z-index: 2;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 767.98px) {
+  .countdown { top: calc(50% - 26px); }
+  .game__controls { left: 0; right: 0; bottom: 0; transform: none; }
+}

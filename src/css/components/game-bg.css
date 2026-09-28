@@ -1,0 +1,30 @@
+/* Фон игровых экранов: Grid (Neutral, 1920 | 360) + Backlight 41:819.
+   Одинаковый у онбординга, обратного отсчёта и игры. */
+
+.game-bg { position: absolute; inset: 0; pointer-events: none; }
+
+.game-bg__grid {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 100vh * 1920 / 1080);
+  width: max(100%, 100svh * 1920 / 1080);
+  aspect-ratio: 1920 / 1080;
+  transform: translate(-50%, -50%);
+  background: url("../../assets/bg/onboarding-grid-desktop.webp") center / 100% 100% no-repeat;
+}
+
+/* свечение начинается под шапкой (88px desktop / 72px mobile) */
+.game-bg__glow { top: 5.5rem; }
+
+@media (max-width: 767.98px) {
+  .game-bg__grid {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    aspect-ratio: 360 / 562;
+    transform: translateX(-50%);
+    background-image: url("../../assets/bg/onboarding-grid-mobile.webp");
+  }
+  .game-bg__glow { top: 4.5rem; }
+}

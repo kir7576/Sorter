@@ -62,6 +62,72 @@
 .arrow--left  { --arrow-color: var(--game-ui-controls-error);   --arrow-ring: var(--game-ui-controls-error); }
 .arrow--right { --arrow-color: var(--game-ui-controls-success); --arrow-ring: var(--stroke-on-bg-container-success); }
 
+/* --- HUD-Timer 506:15897 / 506:15898: «0:59», ведущий ноль — цветом Disable ---- */
+.hud-timer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 198px;
+  height: 64px;
+  padding-top: 5px;
+  font-size: var(--size-hud-timer);
+}
+.hud-timer .timer { gap: 4px; }
+.hud-timer__zero { width: 44px; color: var(--game-ui-disable); }
+.hud-timer__dots { width: 14px; }
+.hud-timer__sec { color: var(--text-light-primary); }
+
+/* HUD-divider 504:10538 */
+.hud-divider { flex: none; width: 3px; height: 48px; background: var(--game-ui-disable); }
+
+/* HealthBar 506:15824: сердца HUD-Health 56px, справа отступ 32 */
+.hud-health { padding-right: var(--space-32); }
+.hud-health .heart { width: 56px; height: 56px; }
+
+@media (max-width: 767.98px) {
+  .hud-timer { justify-content: center; align-items: center; width: 90px; height: 32px; padding: 0 0 4px; }
+  .hud-timer .timer { gap: 2px; }
+  .hud-timer__zero { width: 26px; }
+  .hud-timer__dots { width: 8px; }
+  .hud-divider { width: 2px; height: 24px; }
+  .hud-health { padding-right: 0; }
+  .hud-health .heart { width: 30px; height: 30px; }
+}
+
+/* --- Game-Controls 506:18160 / 506:18159: кнопки «волк ←» и «овца →» --------- */
+.controls { display: flex; align-items: center; justify-content: center; gap: 160px; }
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 136px;
+  height: 136px;
+  padding: var(--space-12);
+  border: 0;
+  border-radius: var(--max-radius);
+  background: var(--control-bg);
+  color: var(--control-on);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.control svg { display: block; flex: none; width: 56px; height: 56px; }
+.control .control__glyph-m { display: none; }
+.control--error   { --control-bg: var(--game-ui-controls-error);   --control-on: var(--game-ui-controls-on-error); }
+.control--success { --control-bg: var(--game-ui-controls-success); --control-on: var(--game-ui-controls-on-success); }
+.control:disabled { cursor: default; }
+.control--error:not(:disabled):hover   { --control-bg: var(--game-ui-controls-error-hover);   --control-on: var(--game-ui-controls-on-error-hover); }
+.control--success:not(:disabled):hover { --control-bg: var(--game-ui-controls-success-hover); --control-on: var(--game-ui-controls-on-success-hover); }
+.control:focus-visible { outline: 2px solid var(--stroke-light); outline-offset: 4px; }
+
+@media (max-width: 767.98px) {
+  .controls { justify-content: space-between; gap: 0; padding: var(--space-24) var(--space-20); }
+  .control { width: 80px; height: 80px; }
+  .control svg { width: 48px; height: 48px; }
+  .control .control__glyph-d { display: none; }
+  .control .control__glyph-m { display: block; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .timer__dots--blink, .heart--blink .heart__active, .heart--blink .heart__disable { animation: none; }
 }

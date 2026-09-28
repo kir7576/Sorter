@@ -9,21 +9,6 @@
   background: var(--background-bg);
 }
 
-/* --- Фон: Backlight 41:819 (Default) + Grid 503:3214 (Neutral) --- */
-.onboarding__bg { position: absolute; inset: 0; pointer-events: none; }
-.onboarding__grid {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: max(100%, 100vh * 1920 / 1080);
-  width: max(100%, 100svh * 1920 / 1080);
-  aspect-ratio: 1920 / 1080;
-  transform: translate(-50%, -50%);
-  background: url("../../assets/bg/onboarding-grid-desktop.webp") center / 100% 100% no-repeat;
-}
-/* свечение начинается под шапкой (88px desktop / 72px mobile) */
-.onboarding__glow { top: 5.5rem; }
-
 .onboarding__header { position: relative; z-index: 3; }
 
 /* --- Сцена --- */
@@ -124,16 +109,6 @@
 
 /* --- Mobile: 360×632 --- */
 @media (max-width: 767.98px) {
-  .onboarding__grid {
-    top: auto;
-    bottom: 0;
-    width: 100%;
-    aspect-ratio: 360 / 562;
-    transform: translateX(-50%);
-    background-image: url("../../assets/bg/onboarding-grid-mobile.webp");
-  }
-  .onboarding__glow { top: 4.5rem; }
-
   .onboarding__stage {
     --stage-w: 360;
     --stage-up: 214;
