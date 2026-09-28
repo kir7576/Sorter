@@ -33,17 +33,23 @@
 .heart:not(.heart--disable) .heart__disable { opacity: 0; }
 .heart--disable .heart__active { opacity: 0; }
 
-/* мигает Disable ↔ Active; сдвинуто на полпериода относительно двоеточия, чтобы мигали по очереди */
+/* мигает Disable ↔ Active; сдвинуто на полпериода относительно двоеточия, чтобы мигали по очереди.
+   Серое лежит под зелёным и видно всё время, пока зелёное не станет полностью непрозрачным,
+   поэтому момента «нет ни одного сердца» не бывает. */
 .heart--blink .heart__active,
 .heart--blink .heart__disable {
   animation: blink-heart var(--blink-period) infinite;
   animation-delay: calc(var(--blink-period) / -2);
 }
-.heart--blink .heart__disable { animation-direction: reverse; }
+.heart--blink .heart__disable { animation-name: blink-heart-under; }
 @keyframes blink-heart {
   0%, 45%   { opacity: 1; }
   50%, 95%  { opacity: 0; }
   100%      { opacity: 1; }
+}
+@keyframes blink-heart-under {
+  0%, 44%   { opacity: 0; }   /* зелёное непрозрачно — серое спрятано, чтобы не торчал контур */
+  45%, 100% { opacity: 1; }   /* появляется до того, как зелёное начнёт гаснуть, и держится, пока оно не вернётся */
 }
 
 /* --- Стрелки управления (L — волки, R — овцы) ------------------------------- */

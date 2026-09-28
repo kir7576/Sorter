@@ -78,6 +78,9 @@
 .onboarding__card--r { transform: translate(calc(-50% + 327px), calc(-50% - 3px)) rotate(10deg); }
 
 .onboarding__arrow { width: 204px; height: 204px; }
+/* стрелки под карточками */
+.onboarding__arrow { z-index: 1; }
+.onboarding__card { z-index: 2; }
 .onboarding__arrow--l { transform: translate(calc(-50% - 530px), calc(-50% + 18px)); }
 .onboarding__arrow--r { transform: translate(calc(-50% + 530px), calc(-50% + 18px)); }
 
