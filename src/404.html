@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Страница не найдена — Найдите волков среди овец</title>
+  <!-- 404 открывается на любом адресе сайта, поэтому пути считаем от корня проекта:
+       на GitHub Pages это /Sorter/, на своём сервере — / -->
+  <script>
+    document.write('<base href="' + (location.pathname.indexOf('/Sorter/') === 0 ? '/Sorter/' : '/') + '">');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Onest:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/header.css">
+  <link rel="stylesheet" href="css/components/edge-glow.css">
+  <link rel="stylesheet" href="css/components/accent-bg.css">
+  <link rel="stylesheet" href="css/screens/final.css">
+  <style>
+    /* 404 — Figma 493:1311: фон Bg-Colored + Grid Accent + Backlight Default, заголовок Hero, кнопка L Dark */
+    .not-found { position: fixed; inset: 0; overflow: hidden; }
+    .not-found__header { position: relative; z-index: 2; }
+    .not-found .edge-glow { top: 5.5rem; z-index: 1; }
+    .not-found .final__title { z-index: 1; top: calc(50% - 40px); width: calc(100% - 2 * var(--space-24)); }
+    .not-found .final__cta { z-index: 1; }
+    @media (max-width: 767.98px) {
+      .not-found .edge-glow { top: 4.5rem; }
+      .not-found .final__title { top: 50%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="not-found">
+    <div class="accent-bg" aria-hidden="true">
+      <div class="accent-bg__frame"><div class="accent-bg__grid"></div></div>
+    </div>
+    <div class="edge-glow" aria-hidden="true"></div>
+
+    <header class="header not-found__header">
+      <a class="header__logo" href="./" aria-label="На главную">
+        <img class="header__logo-desktop" src="assets/logo.svg" alt="EMX Emailmatrix" width="80" height="43">
+        <img class="header__logo-mobile" src="assets/logo-mobile.svg" alt="EMX" width="54" height="22">
+      </a>
+      <div class="header__actions"></div>
+    </header>
+
+    <h1 class="final__title">Тут ничего нет...</h1>
+    <a class="button button--l button--dark final__cta" href="./">Вернуться на главную</a>
+  </main>
+</body>
+</html>

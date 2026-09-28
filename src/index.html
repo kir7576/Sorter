@@ -21,10 +21,22 @@
   <link rel="stylesheet" href="css/reveal.css">
   <link rel="stylesheet" href="css/screens/game.css">
   <link rel="stylesheet" href="css/components/settings.css">
+  <link rel="stylesheet" href="css/components/accent-bg.css">
+  <link rel="stylesheet" href="css/components/form.css">
+  <link rel="stylesheet" href="css/screens/final.css">
+  <link rel="stylesheet" href="css/components/loader.css">
   <script src="js/card-loop.js" defer></script>
   <script src="js/reveal.js" defer></script>
 </head>
 <body>
+  <!-- Лоадер: знак EMX заполняется снизу вверх по мере загрузки (js/loader.js) -->
+  <div class="loader" data-loader role="progressbar" aria-label="Загрузка" aria-valuemin="0" aria-valuemax="100">
+    <div class="edge-glow" aria-hidden="true"></div>
+    <div class="loader__logo" aria-hidden="true">
+      <img src="assets/loader-dim.svg" alt="">
+      <div class="loader__fill"><img src="assets/loader-fill.svg" alt=""></div>
+    </div>
+  </div>
   <main class="page" data-reveal-page>
 
     <!-- Hero — Figma: desktop-hero-screen 296:7343 / mobile-viewport-hero-screen 296:9488 -->
@@ -189,6 +201,89 @@
         <svg class="control__glyph-m" viewBox="0 0 48 48" aria-hidden="true"><path d="M32 34L42 24L32 14M42 24H6" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="round"/></svg>
       </button>
     </div>
+    <!-- Финал: проигрыш / выигрыш с формой / спасибо. js/game-final.js -->
+    <div class="final" data-final hidden>
+      <div class="accent-bg" aria-hidden="true">
+        <div class="accent-bg__frame"><div class="accent-bg__grid"></div></div>
+      </div>
+
+      <section class="final__screen" data-final-screen="lose" aria-labelledby="lose-title" hidden>
+        <h2 class="final__title" id="lose-title">Почти<br>получилось</h2>
+        <button class="button button--l button--dark final__cta" type="button" data-final-restart>Сыграть ещё раз</button>
+      </section>
+
+      <section class="final__screen" data-final-screen="win" aria-labelledby="win-title" hidden>
+        <div class="popup">
+          <div class="popup__head">
+            <h2 class="popup__title" id="win-title">Вы справились!</h2>
+            <p class="popup__text">Оставьте свои данные, чтобы получить<br> заслуженный приз</p>
+          </div>
+          <!-- Демо: данные никуда не отправляются -->
+          <form class="prize-form" novalidate data-prize-form>
+            <div class="prize-form__fields">
+              <div class="field" data-field-wrap="name">
+                <input class="field__input" type="text" name="name" placeholder="Имя" autocomplete="given-name" aria-label="Имя" aria-describedby="name-error">
+                <p class="field__error" id="name-error" aria-live="polite"></p>
+              </div>
+              <div class="field" data-field-wrap="email">
+                <input class="field__input" type="email" name="email" placeholder="Email" autocomplete="email" inputmode="email" aria-label="Email" aria-describedby="email-error">
+                <p class="field__error" id="email-error" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="prize-form__checks">
+              <label class="check" data-field-wrap="policy">
+                <input class="check__input" type="checkbox" name="policy">
+                <span class="check__box" aria-hidden="true"></span>
+                <span class="check__text">Принимаю <a href="#" data-demo-link>политику конфиденциальности</a> и соглашаюсь<br> на обработку <a href="#" data-demo-link>персональных данных</a>.</span>
+              </label>
+              <label class="check" data-field-wrap="mailing">
+                <input class="check__input" type="checkbox" name="mailing">
+                <span class="check__box" aria-hidden="true"></span>
+                <span class="check__text">Соглашаюсь на получение email-рассылки и рекламных материалов.</span>
+              </label>
+            </div>
+            <button class="button button--m button--light prize-form__submit" type="submit" disabled>Хочу приз!</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="final__screen" data-final-screen="thanks" aria-labelledby="thanks-title" hidden>
+        <div class="popup popup--thanks">
+          <div class="popup__head">
+            <h2 class="popup__title" id="thanks-title">Спасибо за игру</h2>
+            <p class="popup__text">Бонусы уже отправлены вам<br> [указать способ получения]</p>
+          </div>
+          <a class="button button--m button--light" href="./">На сайт</a>
+          <hr class="popup__divider">
+          <div class="share">
+            <p class="share__title">Поделитесь с близкими</p>
+            <ul class="share__list">
+              <li><a class="share__link" href="#" data-share="max" aria-label="Поделиться: Max" target="_blank" rel="noopener">
+                <img class="share__icon-d" src="assets/icons/share/max.svg" alt="" width="64" height="64">
+                <img class="share__icon-m" src="assets/icons/share/max-m.svg" alt="" width="48" height="48">
+              </a></li>
+              <li><a class="share__link" href="#" data-share="vk" aria-label="Поделиться: ВКонтакте" target="_blank" rel="noopener">
+                <img class="share__icon-d" src="assets/icons/share/vk.svg" alt="" width="64" height="64">
+                <img class="share__icon-m" src="assets/icons/share/vk-m.svg" alt="" width="48" height="48">
+              </a></li>
+              <li><a class="share__link" href="#" data-share="ok" aria-label="Поделиться: Одноклассники" target="_blank" rel="noopener">
+                <img class="share__icon-d" src="assets/icons/share/ok.svg" alt="" width="64" height="64">
+                <img class="share__icon-m" src="assets/icons/share/ok-m.svg" alt="" width="48" height="48">
+              </a></li>
+              <li><a class="share__link" href="#" data-share="dzen" aria-label="Поделиться: Дзен" target="_blank" rel="noopener">
+                <img class="share__icon-d" src="assets/icons/share/dzen.svg" alt="" width="64" height="64">
+                <img class="share__icon-m" src="assets/icons/share/dzen-m.svg" alt="" width="48" height="48">
+              </a></li>
+              <li><a class="share__link" href="#" data-share="tg" aria-label="Поделиться: Telegram" target="_blank" rel="noopener">
+                <img class="share__icon-d" src="assets/icons/share/tg.svg" alt="" width="64" height="64">
+                <img class="share__icon-m" src="assets/icons/share/tg-m.svg" alt="" width="48" height="48">
+              </a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
     <!-- Панель настроек (служебная, не из макета): открывается кликом по логотипу -->
     <div class="settings" id="game-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" data-settings hidden>
       <div class="settings__head">
@@ -216,5 +311,7 @@
   <script src="js/game-presets.js" defer></script>
   <script src="js/game.js" defer></script>
   <script src="js/game-engine.js" defer></script>
+  <script src="js/game-final.js" defer></script>
+  <script src="js/loader.js" defer></script>
 </body>
 </html>

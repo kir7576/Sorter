@@ -31,6 +31,14 @@
   letter-spacing: var(--size-button-m-letter-spacing);
 }
 
+.button--s {
+  padding: var(--space-20) var(--space-32);
+  border-radius: var(--s-radius);
+  font-size: var(--size-button-s);
+  line-height: var(--size-button-s-line);
+  letter-spacing: var(--size-button-s-letter-spacing);
+}
+
 .button--dark { background: var(--button-dark); color: var(--text-light-primary); }
 .button--dark:hover { background: var(--button-dark-hover); }
 

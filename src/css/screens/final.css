@@ -1,0 +1,65 @@
+/* Финальные экраны — состояния экрана игры; шапка с таймером и жизнями остаётся.
+   Figma: desktop-lose 505:10634 / mobile 444:2724, desktop-Win 505:10848 / Mobile-Pop-Up-Form 460:3493,
+   desktop-Final-form 505:10998 / 247:5207. */
+
+.final {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.final[hidden] { display: none; }
+.final.is-visible { opacity: 1; }
+.game.is-final .game__controls,
+.game.is-final .game__field { visibility: hidden; }
+
+.final__screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(5.5rem + var(--space-24)) var(--space-24) var(--space-24);
+  overflow-y: auto;
+}
+.final__screen[hidden] { display: none; }
+
+/* «Почти получилось»: заголовок Hero, центр на 64px выше середины; кнопка L Dark в 80px от низа */
+.final__title {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 64px);
+  width: min(42.5rem, calc(100% - 2 * var(--space-24)));
+  margin: 0;
+  transform: translate(-50%, -50%);
+  font-family: var(--family-header), sans-serif;
+  font-weight: var(--weight-hero);
+  font-size: var(--size-hero);
+  line-height: 1;
+  text-align: center;
+  color: var(--text-light-primary);
+}
+.final__cta {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--space-64) + var(--space-16));
+  width: min(33.5rem, calc(100% - 2 * var(--space-20)));
+  transform: translateX(-50%);
+}
+
+@media (max-width: 767.98px) {
+  .final__screen { padding: calc(4.5rem + var(--space-12)) var(--space-8) var(--space-12); }
+  .final__title { top: calc(50% - 25px); }
+  /* на мобильном — Button S */
+  .final__cta {
+    bottom: var(--space-24);
+    width: min(20rem, calc(100% - 2 * var(--space-20)));
+    padding: var(--space-20) var(--space-32);
+    border-radius: var(--s-radius);
+    font-size: var(--size-button-s);
+    line-height: var(--size-button-s-line);
+    letter-spacing: var(--size-button-s-letter-spacing);
+  }
+}

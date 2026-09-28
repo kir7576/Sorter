@@ -1,0 +1,74 @@
+/* Фон финальных экранов и 404: Background/Bg-Colored + Grid (Color: Accent, 1920 | 360).
+   Жёлтая сетка — заливка через маску сетки, в центре затемнение эллипсом (multiply). */
+
+:root {
+  --grid-accent: #fae60b;   /* в макете без токена — стоит завести в Figma */
+}
+
+.accent-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--background-bg-colored);
+  pointer-events: none;
+}
+
+/* кадр 1920×1080, покрывает экран как у нейтральной сетки */
+.accent-bg__frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 100vh * 1920 / 1080);
+  width: max(100%, 100svh * 1920 / 1080);
+  aspect-ratio: 1920 / 1080;
+  transform: translate(-50%, -50%);
+}
+
+/* desktop-grid-1920 506:15633: 2000×1125, центр на 63px выше середины кадра, opacity 30% */
+.accent-bg__grid {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 5.83%);
+  width: 104.17%;
+  height: 104.17%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+  isolation: isolate;
+  -webkit-mask: url("../../assets/bg/grid-accent-desktop.webp") 0 0 / 100% 100% no-repeat;
+  mask: url("../../assets/bg/grid-accent-desktop.webp") 0 0 / 100% 100% no-repeat;
+}
+.accent-bg__grid::before,
+.accent-bg__grid::after { content: ""; position: absolute; }
+.accent-bg__grid::before { inset: 0; background: var(--grid-accent); }
+/* Ellipse 105: 565×400, размытие 107 — затемняет центр сетки */
+.accent-bg__grid::after {
+  left: 50%;
+  top: calc(50% + 5.6%);
+  width: 49.65%;
+  height: 73.6%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, var(--background-bg-colored) 35%, transparent);
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 767.98px) {
+  /* Grid 360: кадр 360×562 у нижнего края, сетка 16:9 от −9.96% до 13.88% снизу, opacity 40% */
+  .accent-bg__frame {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    aspect-ratio: 360 / 562;
+    transform: translateX(-50%);
+  }
+  .accent-bg__grid {
+    top: -9.96%;
+    width: auto;
+    height: 76.16%;
+    aspect-ratio: 1920 / 1080;
+    transform: translateX(-50%);
+    opacity: 0.4;
+    -webkit-mask: url("../../assets/bg/grid-accent-mobile.webp") 0 0 / 126.2% 126.2% no-repeat;
+    mask: url("../../assets/bg/grid-accent-mobile.webp") 0 0 / 126.2% 126.2% no-repeat;
+  }
+  .accent-bg__grid::after { top: 50%; width: 42%; height: 58%; }
+}
