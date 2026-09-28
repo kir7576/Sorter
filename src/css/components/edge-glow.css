@@ -1,5 +1,5 @@
 /* Backlight — свечение по краям экрана (ДС: Backlight 41:819, State: Default | Error | Success).
-   Одна PNG растягивается через border-image 9-slice: углы масштабируются целиком, края тянутся только вдоль,
+   Default: одна PNG растягивается через border-image 9-slice: углы масштабируются целиком, края тянутся только вдоль,
    поэтому форма свечения сохраняется на любом соотношении сторон.
    Размер угла: clamp(96px, 33vmin, 360px). */
 
@@ -17,7 +17,29 @@
   opacity: var(--glow-opacity);
 }
 
-/* сигналы ответа: слои поверх базового, анимируется только opacity (js/edge-glow.js) */
-.edge-glow--signal { opacity: 0; will-change: opacity; }
-.edge-glow--ok  { border-image-source: url("../../assets/bg/edge-glow-ok.png"); }
-.edge-glow--err { border-image-source: url("../../assets/bg/edge-glow-err.png"); }
+/* Состояния Error 41:824 и Success 41:826 — как в Figma: всё, кроме скруглённого прямоугольника
+   (выходит за кадр на 81px по бокам и 45px сверху/снизу, радиус 320), залито цветом и размыто на 120px.
+   Собрано на CSS, поэтому форма подстраивается под любой экран; на экранах ниже 1080px размеры
+   уменьшаются пропорционально (vmin). Слои поверх базового, анимируется только opacity (js/edge-glow.js). */
+:root {
+  --glow-err: var(--color-2-solid-700);   /* в макете #FF6F96 без токена, ближайший — #FF6991 */
+  --glow-ok: var(--text-success);          /* #00FF91 */
+}
+
+.edge-glow--signal {
+  border: 0;
+  border-image: none;
+  overflow: hidden;
+  opacity: 0;
+  will-change: opacity;
+}
+.edge-glow--signal::before {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * min(45px, 4.17vmin)) calc(-1 * min(81px, 7.5vmin));
+  border-radius: min(320px, 29.6vmin);
+  box-shadow: 0 0 0 min(600px, 55.6vmin) var(--glow-color);
+  filter: blur(min(120px, 11.1vmin));
+}
+.edge-glow--ok  { --glow-color: var(--glow-ok); }
+.edge-glow--err { --glow-color: var(--glow-err); }
