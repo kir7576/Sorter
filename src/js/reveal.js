@@ -17,6 +17,19 @@
 
   const clamp = (v) => Math.min(1, Math.max(0, v));
 
+  // Цвет панели браузера (theme-color): на hero — фирменный фон, дальше — цвет шапки.
+  // В игре (html.is-game) всегда цвет шапки.
+  const theme = document.querySelector('meta[name="theme-color"]');
+  const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  let dark = null;
+  function setTheme(next) {
+    next = next || document.documentElement.classList.contains('is-game');
+    if (!theme || next === dark) return;
+    dark = next;
+    theme.content = cssVar(next ? '--background-on-bg' : '--background-bg-colored');
+  }
+  window.revealTheme = () => { dark = null; setTheme(window.scrollY >= start + height * 0.5); };
+
   const layout = () => {
     height = next.offsetHeight;
     page.style.marginBottom = `${height}px`;
@@ -31,6 +44,10 @@
     if (opacity !== lastOpacity) inner.style.opacity = lastOpacity = opacity;
     // пока экран не открыт, клики проходят только по странице
     next.style.visibility = p > 0 ? 'visible' : 'hidden';
+    // Когда следующий экран раскрыт полностью, hero целиком за верхним краем. Прячем его:
+    // в Safari панель вкладок полупрозрачная, и сквозь неё видна анимация hero.
+    page.style.visibility = p >= 1 ? 'hidden' : '';
+    setTheme(p >= 0.5);
   };
 
   let ticking = false;

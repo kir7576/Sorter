@@ -13,6 +13,9 @@
 }
 .game.is-open { opacity: 1; visibility: visible; transition: opacity 0.4s ease; }
 html.is-game { overflow: hidden; }
+/* пока открыта игра, страница под ней не видна — в том числе сквозь полупрозрачную панель Safari */
+html.is-game .page,
+html.is-game .reveal { visibility: hidden !important; }  /* reveal.js ставит visibility инлайн */
 
 .game__header { position: relative; z-index: 2; }
 

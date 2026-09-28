@@ -90,6 +90,7 @@
     document.documentElement.classList.add('is-game');
     game.classList.add('is-open');
     game.setAttribute('aria-hidden', 'false');
+    window.revealTheme?.();
     start();
   }
 

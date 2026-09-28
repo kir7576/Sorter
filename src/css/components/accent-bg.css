@@ -1,4 +1,4 @@
-/* Фон финальных экранов и 404: Background/Bg-Colored + Grid (Color: Accent, 1920 | 360).
+/* Фон финальных экранов и 404: Background/Bg-Colored + Grid (Color: Accent, 1920 504:3880 | 360 504:3884).
    Жёлтая сетка — заливка через маску сетки, в центре затемнение эллипсом (multiply). */
 
 :root {
@@ -34,8 +34,15 @@
   transform: translate(-50%, -50%);
   opacity: 0.3;
   isolation: isolate;
-  -webkit-mask: url("../../assets/bg/grid-accent-desktop.webp") 0 0 / 100% 100% no-repeat;
-  mask: url("../../assets/bg/grid-accent-desktop.webp") 0 0 / 100% 100% no-repeat;
+  /* две маски на пересечении (Figma 504:3880): узор сетки + мягкая виньетка, которая гасит края */
+  -webkit-mask:
+    url("../../assets/bg/grid-accent-vignette.webp") 0 0 / 100% 100% no-repeat,
+    url("../../assets/bg/grid-accent-desktop.webp") 0 0 / 100% 100% no-repeat;
+  -webkit-mask-composite: source-in;
+  mask:
+    url("../../assets/bg/grid-accent-vignette.webp") 0 0 / 100% 100% no-repeat,
+    url("../../assets/bg/grid-accent-desktop.webp") 0 0 / 100% 100% no-repeat;
+  mask-composite: intersect;
 }
 .accent-bg__grid::before,
 .accent-bg__grid::after { content: ""; position: absolute; }
@@ -68,7 +75,9 @@
     transform: translateX(-50%);
     opacity: 0.4;
     -webkit-mask: url("../../assets/bg/grid-accent-mobile.webp") 0 0 / 126.2% 126.2% no-repeat;
+    -webkit-mask-composite: source-over;
     mask: url("../../assets/bg/grid-accent-mobile.webp") 0 0 / 126.2% 126.2% no-repeat;
+    mask-composite: add;
   }
   .accent-bg__grid::after { top: 50%; width: 42%; height: 58%; }
 }
