@@ -34,9 +34,10 @@
 .hero__title {
   font-family: var(--family-header), sans-serif;
   font-weight: var(--weight-hero);
-  font-size: var(--size-hero);
-  line-height: var(--size-hero-line);
-  letter-spacing: var(--size-hero-letter-spacing);
+  /* плавно: 40px на экране 360 → 96px на 1920 (Mobile → Desktop токены), дальше — Desktop */
+  font-size: var(--size-hero-fluid);
+  line-height: var(--size-hero-line-fluid);
+  letter-spacing: var(--size-hero-letter-spacing-fluid);
   color: var(--text-light-primary);
 }
 

@@ -6,6 +6,8 @@
 //     Letter-Spacing → px · Weight → без единицы · Max-radius → 9999px
 //     кегль, интерлиньяж, отступы, радиусы → rem (1rem = 16px)
 // - Ссылки между токенами сохраняются как var(--…), чтобы семантика в CSS тоже ссылалась на примитивы.
+// - Для каждого числового токена с Mobile-значением дополнительно выпускается --<имя>-fluid:
+//   clamp() с линейной интерполяцией Mobile-значения (экран 360px) → Desktop-значения (экран 1920px).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,6 +19,8 @@ const DIST_DIR = 'dist';
 const REM_BASE = 16;
 const MOBILE_MEDIA = '(max-width: 767.98px)';
 const REM_SCOPES = ['FONT_SIZE', 'LINE_HEIGHT', 'GAP', 'CORNER_RADIUS', 'WIDTH_HEIGHT'];
+const FLUID_FROM = 360;   // ширина макета Mobile
+const FLUID_TO = 1920;    // ширина макета Desktop
 
 // --- transforms -------------------------------------------------------------
 
@@ -24,13 +28,7 @@ StyleDictionary.registerTransform({
   name: 'sorter/name',
   type: 'name',
   // Space/-2 → space-neg-2 (иначе совпадёт с Space/2)
-  transform: (token) =>
-    token.path
-      .map((p) => p.replace(/^-/, 'neg-'))
-      .join('-')
-      .toLowerCase()
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/-+/g, '-'),
+  transform: (token) => cssName(token.path),
 });
 
 StyleDictionary.registerTransform({
@@ -74,6 +72,49 @@ StyleDictionary.registerFormat({
     return `${header}@media ${options.media} {\n${block.replace(/^/gm, '  ')}\n}\n`;
   },
 });
+
+// --- fluid-переменные --------------------------------------------------------
+
+const cssName = (tokenPath) =>
+  tokenPath
+    .map((p) => p.replace(/^-/, 'neg-'))
+    .join('-')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/-+/g, '-');
+
+const round = (n) => +n.toFixed(4);
+
+// clamp(min, a + b·vw, max): значение mobile на FLUID_FROM, desktop на FLUID_TO
+function fluid(mobile, desktop, unit) {
+  const slope = (desktop - mobile) / (FLUID_TO - FLUID_FROM); // px на 1px ширины
+  const intercept = mobile - slope * FLUID_FROM;               // px
+  const conv = (px) => (unit === 'rem' ? `${round(px / REM_BASE)}rem` : `${round(px)}px`);
+  const lo = Math.min(mobile, desktop);
+  const hi = Math.max(mobile, desktop);
+  const vw = round(slope * 100);
+  return `clamp(${conv(lo)}, ${conv(intercept)} ${vw < 0 ? '-' : '+'} ${Math.abs(vw)}vw, ${conv(hi)})`;
+}
+
+function fluidVars(base, mobileSetTokens, valueAt) {
+  const lines = [];
+  const walk = (obj, prefix) => {
+    for (const [k, v] of Object.entries(obj)) {
+      const p = [...prefix, k];
+      if (v && typeof v === 'object' && '$value' in v) {
+        const desktop = valueAt(base, p.join('.'));
+        if (v.$type !== 'number' || typeof desktop !== 'number' || desktop === v.$value) continue;
+        const name = p.join('/');
+        const scopes = v.$extensions?.['com.figma.scopes'] ?? [];
+        const unit = /Letter-Spacing/i.test(name) ? 'px'
+          : scopes.some((s) => REM_SCOPES.includes(s)) ? 'rem' : null;
+        if (unit) lines.push(`  --${cssName(p)}-fluid: ${fluid(v.$value, desktop, unit)};`);
+      } else if (v && typeof v === 'object') walk(v, p);
+    }
+  };
+  walk(mobileSetTokens, []);
+  return lines.length ? `\n/* Плавная шкала ${FLUID_FROM}→${FLUID_TO}px: Mobile → Desktop */\n:root {\n${lines.join('\n')}\n}\n` : '';
+}
 
 // --- сборка -----------------------------------------------------------------
 
@@ -163,7 +204,8 @@ async function buildClient(client) {
   const css = ['tokens.base.css', 'tokens.mobile.css']
     .map((f) => fs.readFileSync(outDir + f, 'utf8'))
     .join('\n');
-  fs.writeFileSync(outDir + 'tokens.css', css);
+  const fluidCss = mobileSets.map((s) => fluidVars(base, raw[s], valueAt)).join('');
+  fs.writeFileSync(outDir + 'tokens.css', css + fluidCss);
   fs.rmSync(outDir + 'tokens.base.css');
   fs.rmSync(outDir + 'tokens.mobile.css');
   console.log(`✔ ${client}: ${outDir}tokens.css (${baseSets.length} наборов + ${mobileSets.length} mobile)`);

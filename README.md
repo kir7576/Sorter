@@ -14,6 +14,7 @@ Figma (копия файла под клиента)
 
 - `npm run build:tokens` — собрать всех клиентов; `npm run build:tokens -- sorter` — одного.
 - Режим `Mobile` из Figma уходит в `@media (max-width: 767.98px)`.
+- Для каждого размера с Mobile-значением есть `--<имя>-fluid` — плавная шкала от Mobile (экран 360) до Desktop (экран 1920), например `font-size: var(--size-hero-fluid)`.
 - Единицы расставляет сборка (в Figma числа без единиц): кегль, интерлиньяж, отступы, радиусы → rem (1rem = 16px); letter-spacing → px; weight → без единицы.
 - `dist/` не коммитится — собирается при деплое.
 
