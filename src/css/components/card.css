@@ -1,0 +1,14 @@
+/* Card — ДС: Card 82:759. Карточки-иллюстрации лежат в assets/<client>/cards/<name>.webp.
+   Размер: 384px в макете 1920 (20vw), 220px в макете 360 — дальше масштабируется по ширине экрана. */
+
+:root {
+  --card-size: clamp(13.75rem, 20vw, 32rem);
+}
+
+.card {
+  width: var(--card-size);
+  height: var(--card-size);
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}

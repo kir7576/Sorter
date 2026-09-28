@@ -1,0 +1,93 @@
+/* Hero — Figma: desktop-hero-screen 296:7343 (1920×1080), mobile-viewport-hero-screen 296:9488 (360×632) */
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  height: 100svh;
+  min-height: 34rem;
+  padding: var(--space-24) var(--space-20) var(--space-64);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero__head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 60rem);
+  text-align: center;
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-40);
+}
+
+.hero__title {
+  font-family: var(--family-header), sans-serif;
+  font-weight: var(--weight-hero);
+  font-size: var(--size-hero);
+  line-height: var(--size-hero-line);
+  letter-spacing: var(--size-hero-letter-spacing);
+  color: var(--text-light-primary);
+}
+
+.hero__subtitle {
+  max-width: 37.5rem;
+  font-family: var(--family-body), sans-serif;
+  font-weight: var(--weight-body-1);
+  font-size: var(--size-body-1);
+  line-height: var(--size-body-1-line);
+  color: var(--text-light-primary);
+}
+
+/* Лента карточек занимает всё свободное место между заголовком и кнопкой */
+.card-loop {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  align-self: stretch;
+  margin-inline: calc(var(--space-20) * -1);
+  min-height: calc(var(--card-size) * 1.2);
+}
+
+.card-loop .card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: calc(var(--card-size) / -2) 0 0 calc(var(--card-size) / -2);
+  will-change: transform;
+}
+
+.hero__cta {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  width: min(100%, 33.5rem);
+}
+
+@media (max-width: 767.98px) {
+  .hero {
+    padding: 0 var(--space-20) var(--space-24);
+  }
+  .hero__text { gap: var(--space-16); width: min(100%, 20rem); }
+  .hero__br { display: none; }
+  .hero__subtitle { max-width: 17.5rem; } /* в макете перенос после «карточки» */
+
+  /* ДС: Button Size=M на мобильном */
+  .hero__cta {
+    width: min(100%, 20rem);
+    padding: var(--space-24) var(--space-32);
+    border-radius: var(--s-radius);
+    font-size: var(--size-button-m);
+    line-height: var(--size-button-m-line);
+    letter-spacing: var(--size-button-m-letter-spacing);
+  }
+}

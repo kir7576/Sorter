@@ -3,18 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sorter</title>
+  <title>Найдите волков среди овец</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Onest:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/card.css">
+  <link rel="stylesheet" href="css/components/scene-bg.css">
+  <link rel="stylesheet" href="css/screens/hero.css">
+  <link rel="stylesheet" href="css/reveal.css">
+  <script src="js/card-loop.js" defer></script>
+  <script src="js/reveal.js" defer></script>
 </head>
 <body>
-  <main class="stub">
-    <h1 class="stub__title">Sorter</h1>
-    <p class="stub__text">Сайт в разработке. Эта страница проверяет, что токены собираются и публикуются.</p>
-    <button class="button" type="button">Кнопка</button>
+  <main class="page" data-reveal-page>
+
+    <!-- Hero — Figma: desktop-hero-screen 296:7343 / mobile-viewport-hero-screen 296:9488 -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="scene-bg scene-bg--hero" aria-hidden="true">
+        <div class="scene-bg__frame">
+          <img class="scene-bg__photo" src="assets/bg/hero-photo-desktop.webp" alt="" decoding="async">
+          <img class="scene-bg__silhouette" src="assets/bg/hero-silhouette-desktop.svg" alt="" decoding="async">
+          <div class="scene-bg__texture"></div>
+        </div>
+        <div class="scene-bg__frame scene-bg__frame--mobile">
+          <img class="scene-bg__photo" src="assets/bg/hero-photo-mobile.webp" alt="" decoding="async" loading="lazy">
+          <div class="scene-bg__texture"></div>
+          <img class="scene-bg__silhouette" src="assets/bg/hero-silhouette-mobile.svg" alt="" decoding="async" loading="lazy">
+        </div>
+      </div>
+
+      <header class="hero__head">
+        <div class="logo">
+          <img class="logo__img" src="assets/logo.svg" alt="EMX Emailmatrix" width="80" height="43">
+        </div>
+        <div class="hero__text">
+          <h1 class="hero__title" id="hero-title">Найдите волков<br class="hero__br"> среди овец</h1>
+          <p class="hero__subtitle">Распределите карточки и получите приз!</p>
+        </div>
+      </header>
+
+      <!-- Порядок карточек по центру как в макете: w-3 s-4 w-2 [s-2] s-1 w-4 s-3 -->
+      <div class="card-loop" data-card-loop
+           data-cards="w-3,s-4,w-2,s-2,s-1,w-4,s-3,w-1"
+           data-center="3"
+           aria-hidden="true"></div>
+
+      <a class="button button--l button--dark hero__cta" href="#next" data-reveal-link>Играть</a>
+    </section>
+
   </main>
+
+  <!-- Следующий экран: раскрывается из-под hero (параллакс + фейд). Временная заглушка до вёрстки онбординга -->
+  <section class="reveal" id="next" data-reveal>
+    <div class="reveal__inner" data-reveal-inner>
+      <h2 class="reveal__title">Следующий экран</h2>
+      <p class="reveal__text">Здесь будет онбординг</p>
+    </div>
+  </section>
 </body>
 </html>

@@ -1,0 +1,45 @@
+/* Button — ДС: Button 205:5894. Size: L | M | S; Color: Light | Dark; State: default | hover | disable */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-family: var(--family-button), sans-serif;
+  font-weight: var(--weight-button);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button--l {
+  padding: var(--space-32) var(--space-64);
+  border-radius: var(--l-radius);
+  font-size: var(--size-button-l);
+  line-height: var(--size-button-l-line);
+  letter-spacing: var(--size-button-l-letter-spacing);
+}
+
+.button--m {
+  padding: var(--space-24) var(--space-32);
+  border-radius: var(--s-radius);
+  font-size: var(--size-button-m);
+  line-height: var(--size-button-m-line);
+  letter-spacing: var(--size-button-m-letter-spacing);
+}
+
+.button--dark { background: var(--button-dark); color: var(--text-light-primary); }
+.button--dark:hover { background: var(--button-dark-hover); }
+
+.button--light { background: var(--button-light); color: var(--text-dark-primary); }
+.button--light:hover { background: var(--button-light-hover); }
+
+.button:disabled,
+.button[aria-disabled="true"] { cursor: default; }
+.button--dark:disabled { background: var(--button-dark-disable); color: var(--text-dark-tertiary); }
+.button--light:disabled { background: var(--button-light-disable); color: var(--text-light-tertiary); }
+
+.button:focus-visible { outline: 2px solid var(--stroke-light); outline-offset: 4px; }

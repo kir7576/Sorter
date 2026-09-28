@@ -1,0 +1,81 @@
+/* Фон экранов — ДС: Hero-Screen-Bg 506:21613.
+   Цвет — токен Background/Bg-Colored; поверх три слоя-ассета: фото, силуэт, бумажная текстура.
+   Слои позиционируются в процентах от «рамки» макета (1920×1080 / 360×632), рамка работает как background-size: cover. */
+
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--background-bg-colored);
+  pointer-events: none;
+}
+
+.scene-bg__frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 100vh * 1920 / 1080);
+  width: max(100%, 100svh * 1920 / 1080);
+  aspect-ratio: 1920 / 1080;
+  transform: translate(-50%, -50%);
+  /* transform изолирует группу наложения: цвет должен быть внутри рамки, иначе multiply-текстура смешается с прозрачностью */
+  background: var(--background-bg-colored);
+}
+
+.scene-bg__frame > * { position: absolute; max-width: none; }
+
+.scene-bg__texture {
+  inset: 0;
+  background: url("../../assets/bg/paper-texture.webp") top left / 26.042% auto repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.4;
+}
+
+/* Desktop: слои из desktop-hero-screen */
+.scene-bg--hero .scene-bg__photo {
+  left: -2.5%;
+  top: -14.074%;
+  width: 106.719%;
+  height: 216.667%;
+  object-fit: cover;
+  opacity: 0.4;
+}
+.scene-bg--hero .scene-bg__silhouette {
+  left: -2.304%;
+  top: -13.89%;
+  width: 106.439%;
+  height: 216.069%;
+  opacity: 0.5;
+}
+
+.scene-bg__frame--mobile { display: none; }
+
+/* Mobile: слои из mobile-viewport-hero-screen (360×632) */
+@media (max-width: 767.98px) {
+  .scene-bg__frame { display: none; }
+  .scene-bg__frame--mobile {
+    display: block;
+    width: max(100%, 100vh * 360 / 632);
+    width: max(100%, 100svh * 360 / 632);
+    aspect-ratio: 360 / 632;
+  }
+  .scene-bg--hero .scene-bg__frame--mobile .scene-bg__photo {
+    left: -102.522%;
+    top: 10.369%;
+    width: 299.556%;
+    height: 95.981%;
+    opacity: 0.5;
+  }
+  .scene-bg--hero .scene-bg__frame--mobile .scene-bg__silhouette {
+    left: -109.736%;
+    top: -9.63%;
+    width: 318.844%;
+    height: 207.386%;
+    opacity: 0.5;
+  }
+  .scene-bg__frame--mobile .scene-bg__texture {
+    top: 3.16%;
+    bottom: -3.16%;
+    background-size: 234.03% auto;
+  }
+}
