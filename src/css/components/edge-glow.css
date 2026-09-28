@@ -1,0 +1,23 @@
+/* Backlight — свечение по краям экрана (ДС: Backlight 41:819, State: Default | Error | Success).
+   Одна PNG растягивается через border-image 9-slice: углы масштабируются целиком, края тянутся только вдоль,
+   поэтому форма свечения сохраняется на любом соотношении сторон.
+   Размер угла: clamp(96px, 33vmin, 360px). */
+
+:root {
+  --glow-size: clamp(96px, 33vmin, 360px);
+  --glow-opacity: 1;
+}
+
+.edge-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid transparent;
+  border-image: url("../../assets/bg/edge-glow.png") 180 fill / var(--glow-size) stretch;
+  opacity: var(--glow-opacity);
+}
+
+/* сигналы ответа: слои поверх базового, анимируется только opacity (js/edge-glow.js) */
+.edge-glow--signal { opacity: 0; will-change: opacity; }
+.edge-glow--ok  { border-image-source: url("../../assets/bg/edge-glow-ok.png"); }
+.edge-glow--err { border-image-source: url("../../assets/bg/edge-glow-err.png"); }
