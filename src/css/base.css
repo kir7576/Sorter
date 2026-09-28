@@ -1,0 +1,60 @@
+/* Базовые стили. Значения — только через токены из tokens.css */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--background-bg);
+  color: var(--text-light-primary);
+  font-family: var(--family-body), system-ui, sans-serif;
+  font-weight: var(--weight-body-1);
+  font-size: var(--size-body-1);
+  line-height: var(--size-body-1-line);
+}
+
+/* --- временная заглушка, уйдёт с первой вёрсткой --- */
+
+.stub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-24);
+  min-height: 100vh;
+  padding: var(--space-24);
+  text-align: center;
+}
+
+.stub__title {
+  margin: 0;
+  font-family: var(--family-header), sans-serif;
+  font-weight: var(--weight-header);
+  font-size: var(--size-hero);
+  line-height: var(--size-hero-line);
+  letter-spacing: var(--size-hero-letter-spacing);
+  color: var(--brand-brand);
+}
+
+.stub__text {
+  margin: 0;
+  max-width: 36rem;
+  color: var(--text-light-secondary);
+}
+
+/* Button: Size=M, Color=Light */
+.button {
+  padding: var(--space-24) var(--space-64);
+  border: 0;
+  border-radius: var(--s-radius);
+  background: var(--button-light);
+  color: var(--text-dark-primary);
+  font-family: var(--family-button), sans-serif;
+  font-weight: var(--weight-button);
+  font-size: var(--size-button-m);
+  line-height: var(--size-button-m-line);
+  letter-spacing: var(--size-button-m-letter-spacing);
+  cursor: pointer;
+}
+
+.button:hover { background: var(--button-light-hover); }

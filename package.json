@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build:tokens": "node build-tokens.mjs"
+    "build:tokens": "node build-tokens.mjs",
+    "build": "node build.mjs"
   },
   "repository": {
     "type": "git",
